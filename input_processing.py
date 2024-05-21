@@ -51,38 +51,62 @@ def print_message(sensor):
 def main():
     print("\n***ENSF 692 Car Vision Detector Processing Program***\n") # Printing title of program
     sensor = Sensor() #Creating new sensor object
-    
+    selection(sensor)
+
+
+# Selection function. This function provides prompts and receives inputs, processing inputs and handling invalid inputs. It calls the print_message function when required.
+def selection(sensor):
+
     while True:
-        option = int(input("Are changes detected in the vision input?\nSelect 1 for light, 2 for pedestrian, 3 for vehicle, or 0 to end the program. ")) # Obtaining input from user on which variable to change.
-        if not(option == 0 or option == 1 or option == 2 or option == 3): # checking if input is valid
-            print("Invalid input. You must select either 1, 2, 3 or 0") # if not valid, print this message. Loop should restart from beginning after printing current variable and current recommendation. QUESTION: Not raising ValueError exactly. How do I raise it without it terminating the program?
-        elif option == 0: # if option is 0, exit while loop.
-            break
+        option = 0
+        try:
+            option = int(input("Are changes detected in the vision input?\nSelect 1 for light, 2 for pedestrian, 3 for vehicle, or 0 to end the program. ")) # Obtaining input from user on which variable to change.
+        except ValueError:
+            print("Invalid input. Value must be 1, 2, 3, or 0.\n")
+            continue # restart while loop
+        try:
+            if not(option == 0 or option == 1 or option == 2 or option == 3): # checking if input is valid
+                raise ValueError # if not valid, raise ValueError
+        except ValueError:
+            print("Invalid input. Value must be 1, 2, 3 or 0.\n") # if ValueError, print this message.
+            continue # restart while loop
+        if option == 0: # if option is 0, exit while loop.
+                break # break out of while loop
         else:
             if option == 1: # if option is 1, ask for light selection input
                 light_selection = input("What change has been identified? ")
-                if not(light_selection == 'green' or light_selection == 'yellow' or light_selection == 'red'): # check if light selection is valid (i.e. red, green or yellow)
-                    print("Invalid vision change. Value must be green, yellow, or red") # if input is not valid, print this message
+                try:
+                    if not(light_selection == 'green' or light_selection == 'yellow' or light_selection == 'red'): # check if light selection is valid (i.e. red, green or yellow)
+                        raise ValueError # if input is not valid, raise ValueError
+                except ValueError:
+                    print("Invalid vision change. Value must be green, yellow or red.") # if ValueError, print this message and restart while loop.
+                    print_message(sensor) # display current variables as shown in sample screenshots on D2L.
+                    continue
                 else:
                     sensor.update_status(option, light_selection) # if input is valid, update sensor object variable to match new light colour.
             elif option == 2: # if option is 2, ask for pedestrian selection, yes or no
                 pedestrian_selection = input("What change has been identified? ")
-                if not(pedestrian_selection == 'yes' or pedestrian_selection == 'no'): # check if pedestrian selection is valid (i.e. yes or no)
-                    print("Invalid vision change. Value must be yes or no") # if input is not valid, print this message
+                try:
+                    if not(pedestrian_selection == 'yes' or pedestrian_selection == 'no'): # check if pedestrian selection is valid (i.e. yes or no)
+                        raise ValueError # if input is not valid, raise ValueError
+                except ValueError:
+                    print("Invalid vision change. Value must be yes or no.") # if ValueError, print this message and restart while loop.
+                    print_message(sensor) # display current variables as shown in sample screenshots on D2L.
+                    continue
                 else:
                     sensor.update_status(option, pedestrian_selection) # if input is valid, update sensor object variable to match new pedestrian selection.
             elif option == 3:
                 vehicle_selection = input("What change has been identified? ")
-                if not(vehicle_selection == 'yes' or vehicle_selection == 'no'): # check if vehicle selection is valid (i.e. yes or no)
-                    print("Invalid vision change. Value must be yes or no") # if input is not valid, print this message
+                try:
+                    if not(vehicle_selection == 'yes' or vehicle_selection == 'no'): # check if vehicle selection is valid (i.e. yes or no)
+                        raise ValueError # if input is not valid, raise ValueError
+                except ValueError:
+                    print("Invalid vision change. Value must be yes or no.") # if ValueError, print this message and restart while loop.
+                    print_message(sensor) # display current variables as shown in sample screenshots on D2L.
+                    continue
                 else:
                     sensor.update_status(option, vehicle_selection) # if input is valid, update sensor object variable to match new vehicle selection.
         print_message(sensor) # Call print message function to display current recommendation and current variables in the sensor object.
-
-        
-
-
-
 
 
 # Conventional Python code for running main within a larger program
